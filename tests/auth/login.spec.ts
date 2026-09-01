@@ -1,15 +1,23 @@
 import  { test, expect } from "@playwright/test";
 import { loginpom } from "../../pages/loginpom.page";
 import users from '../../data/users.json';
+import {homepage} from '../../pages/home.page'
 import dotenv from 'dotenv';
 dotenv.config();
-test.beforeEach(async ({ page }) => {
-  await page.goto('/login');
-  const consentButton = page.getByRole('button', { name: 'Consent' });
 
-  if (await consentButton.isVisible().catch(() => false)) {
-    await consentButton.click();
-  }
+test.beforeEach(async ({ page }) => {
+
+    await page.goto('/');
+
+    const consentButton = page.getByRole('button', { name: 'Consent' });
+
+    if (await consentButton.isVisible().catch(() => false)) {
+        await consentButton.click();
+    }
+
+    const h = new homepage(page);
+
+    await h.gotologin();
 });
 
 test('login valide',async({page})=>{
