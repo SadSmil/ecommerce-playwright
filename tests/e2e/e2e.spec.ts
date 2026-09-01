@@ -31,7 +31,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 
-test('E2E ', {tag:"@e2e"}, async ({ page }) => {
+test('E2E test ', {tag:"@e2e"}, async ({ page }) => {
 
     const h = new homepage(page);
     const products = new productpage(page);
