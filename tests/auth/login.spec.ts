@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }) => {
     await h.gotologin();
 });
 
-test('login valide',async({page})=>{
+test('login valide', {tag:"@loginValide"},async({page})=>{
     const lp=new loginpom(page);
     await lp.login(process.env.VALID_USER_EMAIL!,process.env.VALID_USER_PASSWORD!);
     await expect(page.getByText('Logged in as Amal')).toBeVisible();
