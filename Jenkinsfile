@@ -1,17 +1,11 @@
 pipeline {
     agent any
 
-     tools {
+    tools {
         nodejs 'NodeJS-20'
     }
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
 
         stage('Install Dependencies') {
             steps {
@@ -26,26 +20,25 @@ pipeline {
         }
 
         stage('Run Playwright Tests') {
-    steps {
-        withCredentials([
-            string(
-                credentialsId: 'playwright-email',
-                variable: 'VALID_USER_EMAIL'
-            ),
-            string(
-                credentialsId: 'playwright-password',
-                variable: 'VALID_USER_PASSWORD'
-            )
-        ]) {
-            sh 'npx playwright test --project=chromium'
+            steps {
+                withCredentials([
+                    string(
+                        credentialsId: 'playwright-email',
+                        variable: 'VALID_USER_EMAIL'
+                    ),
+                    string(
+                        credentialsId: 'playwright-password',
+                        variable: 'VALID_USER_PASSWORD'
+                    )
+                ]) {
+                    sh 'npx playwright test --project=chromium'
+                }
+            }
         }
-    }
-    }
     }
 
     post {
         always {
-
             archiveArtifacts artifacts: 'playwright-report/**',
                              allowEmptyArchive: true
 
