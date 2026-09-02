@@ -29,6 +29,10 @@ pipeline {
                     string(
                         credentialsId: 'playwright-password',
                         variable: 'VALID_USER_PASSWORD'
+                    ),
+                    string(
+                        credentialsId: 'playwright-BASE_URL',
+                        variable: 'BASE_URL'
                     )
                 ]) {
                     sh 'npx playwright test --project=chromium'
