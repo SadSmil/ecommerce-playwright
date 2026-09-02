@@ -13,9 +13,9 @@ pipeline {
             }
         }
 
-        stage('Install Playwright Browsers') {
+        stage('Check Docker') {
             steps {
-                sh 'npx playwright install chromium'
+                sh 'docker --version'
             }
         }
 
@@ -35,7 +35,16 @@ pipeline {
                         variable: 'BASE_URL'
                     )
                 ]) {
-                    sh 'npx playwright test --project=chromium'
+                    sh '''
+                    docker run --rm \
+                      -v "$PWD:/work" \
+                      -w /work \
+                      -e VALID_USER_EMAIL \
+                      -e VALID_USER_PASSWORD \
+                      -e BASE_URL \
+                      mcr.microsoft.com/playwright:v1.55.0-noble \
+                      npx playwright test --project=chromium
+                    '''
                 }
             }
         }
@@ -43,6 +52,7 @@ pipeline {
 
     post {
         always {
+
             archiveArtifacts artifacts: 'playwright-report/**',
                              allowEmptyArchive: true
 
